@@ -25,9 +25,9 @@ from window import calibration_and_center, shape_Choice, cut_shape
 ########################################################################
 '''
 
-#board = pyfirmata.Arduino('COM9')
-#MotorSys = Motor_System(board)
-#joyStick = JoyStick(board,MotorSys)
+board = pyfirmata.Arduino('COM9')
+MotorSys = Motor_System(board)
+joyStick = JoyStick(board,MotorSys)
 
 
 '''
@@ -38,25 +38,25 @@ from window import calibration_and_center, shape_Choice, cut_shape
 
 
 cut_wizard = calibration_and_center( 
-                                    #joyStick = joyStick, 
-                                    #MotorSys = MotorSys, 
-                                    #board = board,
-                                    #known_position= False
+                                    joyStick = joyStick, 
+                                    MotorSys = MotorSys, 
+                                    board = board,
+                                    known_position= False
                                     )
 while cut_wizard:
     
     path = shape_Choice( 
-                 #board = board,
-                 #MotorSys = MotorSys
+                 board = board,
+                 MotorSys = MotorSys
                  )
 
             
     if path is not None:
         
         cut_wizard = cut_shape(path
-            #MotorSys, 
-            #path,
-            #board
+            MotorSys, 
+            path,
+            board
             )
     else:
         break
