@@ -108,8 +108,7 @@ def draw_smth(event):
     draw_path_y.append(y_c)
 
 
-#def calibration_and_center(joyStick,MotorSys,known_position,board):
-def calibration_and_center():
+def calibration_and_center(joyStick,MotorSys,known_position,board):
     global window
     
     window = sg.Window('Calibration', lay_joystick)
@@ -121,8 +120,8 @@ def calibration_and_center():
         for i in range(1000):
             pass
             #joyStick.control()
-        #if known_position:
-        #    update(MotorSys.getPosition())
+        if known_position:
+            update(MotorSys.getPosition())
         
         if event in (sg.WIN_CLOSED, 'Cancel'):
             board.sp.close() 
@@ -130,28 +129,26 @@ def calibration_and_center():
         
         elif event in (sg.WIN_CLOSED, 'Calibrate'):
             position = "0,0"
-            #update(position)
-            #known_position = True
-            #MotorSys.setPosition((0,0))
+            update(position)
+            known_position = True
+            MotorSys.setPosition((0,0))
             
         elif event in (sg.WIN_CLOSED, 'Center'):
             window.close()
             
-            #MotorSys.center()
-            #MotorSys.relativeCenter = MotorSys.getPosition()
+            MotorSys.center()
+            MotorSys.relativeCenter = MotorSys.getPosition()
             window.close()
             
             return True
         
         elif event in (sg.WIN_CLOSED, 'Set Center'):
             window.close()
-            #MotorSys.setPosition((0,0))
-            #MotorSys.relativeCenter = MotorSys.getPosition()
+            MotorSys.setPosition((0,0))
+            MotorSys.relativeCenter = MotorSys.getPosition()
             return True
 
-#def shape_Choice(board, MotorSys):
-def shape_Choice():
-
+def shape_Choice(board, MotorSys):
     
     global draw_path_x
     global draw_path_y
@@ -170,7 +167,7 @@ def shape_Choice():
         event, values = window.read()
         #CHECK WHETHER CANCEL BUTTON HAS BEEN PRESSED
         if event in (sg.WIN_CLOSED, 'Cancel'):
-            #board.sp.close() 
+            board.sp.close() 
             window.close()
             break
     
@@ -178,8 +175,7 @@ def shape_Choice():
         elif event in (sg.WIN_CLOSED, 'OK'):
             cut = True
             
-            #x_pos,y_pos = MotorSys.relativeCenter
-            x_pos,y_pos = (0,0)
+            x_pos,y_pos = MotorSys.relativeCenter
             
             if values['Circle'] == True:
                 radius = float(values["radius_input"])
@@ -290,8 +286,7 @@ def shape_Choice():
             window['RectangleConfiguration'].update(visible=False)
             window['DrawConfiguration'].update(visible=True)
             
-#def cut_shape(MotorSys, path, board):
-def cut_shape(path):
+def cut_shape(MotorSys, path, board):
     window = sg.Window('Cutting', deepcopy(lay_cut))
     point = path.start
     continue_cutting = False
@@ -314,15 +309,12 @@ def cut_shape(path):
         elif event in (sg.WIN_CLOSED, "New Shape"):
             x_cen, y_cen = MotorSys.relativeCenter
             MotorSys.moveTo(x_cen,y_cen)
-            print("Closing Window")
             window.close()
-            print("window closed")
             return True
         
         elif event in (sg.WIN_CLOSED, "Begin") or continue_cutting:
             continue_cutting = True
             for i in range(100):
-                #print("Next Point Coordinate:",point.coord)
                 point = point.next
                 speed = float(values["speed"])
                 MotorSys.moveTo(point.coord[0],point.coord[1],speed)
