@@ -118,8 +118,7 @@ def calibration_and_center(joyStick,MotorSys,known_position,board):
         
         event, values = window.read(timeout=0.1)
         for i in range(1000):
-            pass
-            #joyStick.control()
+            joyStick.control()
         if known_position:
             update(MotorSys.getPosition())
         
@@ -155,8 +154,6 @@ def shape_Choice(board, MotorSys):
     global canvas
     
     global window
-    
-    
     
     window = sg.Window('Cut Wizard', deepcopy(lay_shapeChoice))
     
