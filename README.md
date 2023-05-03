@@ -5,8 +5,9 @@ This repository includes all the files necessary to connect your computer to the
 ## Requirements
 
 Install the required packages by running the command in your command prompt:
-    pip install -r requirements.txt
-
+```
+pip install -r requirements.txt
+```
 
 ## Running the Code
 
