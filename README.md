@@ -17,3 +17,12 @@ The following python libraries will be needed:
 In order to run the code, all the files need to be located in the same folder. When connecting your computer to the arduino using the USB cable, take note of the COM port used, as line 28 of file gui.py will have to be modified to match the COM port in use. To open the graphic user interface to control the stepper motors, run the gui.py file from a Python IDE (Spyder, vscode, etc).
 
 
+## Architecture
+
+### helper.py
+
+### joystick.py
+
+### Motor.py
+
+### MotorSystem.py
