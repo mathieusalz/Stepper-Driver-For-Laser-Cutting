@@ -19,6 +19,7 @@ In order to run the code, all the files need to be located in the same folder. W
 ### Motor Control
 
 #### joystick.py
+
 Object initialized with:
 
 Functions:
@@ -26,6 +27,7 @@ Functions:
 - speedMapper():
 
 #### Motor.py
+
 Object initialized with:
 -
 Functions:
@@ -35,6 +37,7 @@ Functions:
 - switchDirection: switches the direction from the motor (e.g. if set to left then sets to right) 
 
 #### MotorSystem.py
+
 Object initialized with:
 - 
 
