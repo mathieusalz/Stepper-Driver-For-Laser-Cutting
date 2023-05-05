@@ -29,7 +29,7 @@ Functions:
 #### Motor.py
 
 Object initialized with:
--
+
 Functions:
 - run(steps,speed): runs a motor for a given number of steps at a given speed
 - setBrother(brother): sets the motors 
@@ -39,7 +39,6 @@ Functions:
 #### MotorSystem.py
 
 Object initialized with:
-- 
 
 Functions:
 ##### Setters
