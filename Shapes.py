@@ -59,24 +59,18 @@ def circle(x_pos, y_pos, radius):
 
 def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     
-    truncatedCircle = LinkedList()
-        
     if truncate_side == "Left":
-        truncatedCircle.start = circlePath.centerDown
-        compare_coord = 0
+        circlePath.start = circlePath.centerDown
     elif truncate_side == "Right":
-        truncatedCircle.start = circlePath.centerTop
-        compare_coord = 0
+        circlePath.start = circlePath.centerTop
     elif truncate_side == "Top":
-        truncatedCircle.start = circlePath.centerLeft
-        compare_coord = 1
+        circlePath.start = circlePath.centerLeft
     else:
-        truncatedCircle.start = circlePath.centerRight
-        compare_coord = 1
+        circlePath.start = circlePath.centerRight
     
     steps_to_go = int(x_steps*0.707//1) 
     
-    current = truncatedCircle.start
+    current = circlePath.start
     
     for i in range(steps_to_go):
         current = current.next
@@ -87,7 +81,6 @@ def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     
     current.next = walker
     
-    return truncatedCircle
 
 
 def rectangle(x_pos, y_pos, x_length, y_length):

@@ -154,11 +154,9 @@ def shape_Choice(board, MotorSys):
                     else:
                         side = "Bottom"
                     
-                    path = Shapes.truncateCircle(x_steps,y_steps,path,side)
-                    window.close()
+                    Shapes.truncateCircle(x_steps,y_steps,path,side)
                 
-                else:
-                    window.close()
+                window.close()
                 
                 return path, False
             
@@ -180,10 +178,8 @@ def shape_Choice(board, MotorSys):
                         side = "Bottom Right"
                     
                     Shapes.truncateRectangle(x_steps,y_steps,path,side)
-                    window.close()
                 
-                else:
-                    window.close()
+                window.close()
                 
                 return path, False
             

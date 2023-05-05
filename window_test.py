@@ -140,11 +140,9 @@ def shape_Choice():
                     else:
                         side = "Bottom"
                     
-                    path = Shapes.truncateCircle(x_steps,y_steps,path,side)
-                    window.close()
-                
-                else:
-                    window.close()
+                    Shapes.truncateCircle(x_steps,y_steps,path,side)
+
+                window.close()
                 return path, False
             
             #   Rectangle
@@ -165,10 +163,8 @@ def shape_Choice():
                         side = "Bottom Right"
                     
                     Shapes.truncateRectangle(x_steps,y_steps,path,side)
-                    window.close()
                 
-                else:
-                    window.close()
+                window.close()
                 return path, False
             
             #   Draw

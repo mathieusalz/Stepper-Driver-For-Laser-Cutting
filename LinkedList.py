@@ -27,24 +27,11 @@ class LinkedList():
         start_point = self.addElement((x_coords[0],y_coords[0]))
         self.start = start_point
         
-        if shape == "Rectangle":
-            self.leftTopCorner = start_point
-
-        
         last_point = start_point       
                      
         for i in range(1,len(x_coords)):
             point = self.addElement((x_coords[i],y_coords[i]))
             last_point.next = point
-            
-            if shape == "Rectangle":
-                if i == 2*x_steps:
-                    self.rightTopCorner = point
-                if i == 2*x_steps + 2*y_steps:
-                    self.rightBottomCorner = point
-                if i == 4*x_steps + 2*y_steps:
-                    self.leftBottomCorner = point
-                        
             last_point = point
 
         last_point.next = start_point
