@@ -44,8 +44,8 @@ Object representing the Motor System (i.e. the X Motor and Y Motor).
 
 Functions:
 ##### Setters
-- init(board)
-- setRelativeCenter(coordinates):
+- init(board):
+- setRelativeCenter(coordinates): sets the position 
 - setPosition(coordinates):
 - setLimits():
 - setLeft():
@@ -53,14 +53,14 @@ Functions:
 - setDown():
 - setUp():
 ##### Getters
-- getPosition():
+- getPosition(self): gets the position of the MotorSystem 
 ##### Movement
-- goLeft(steps):
-- goRight(steps):
-- goDown(steps):
-- goUp(steps):
-- center(steps)
-- moveTo(x,y,speed)
+- goLeft(self,steps): moves stage to the left by a given amount of steps
+- goRight(self,steps): moves stage to the right by a given amount of steps
+- goDown(self,steps): moves stage downwards by a given amount of steps
+- goUp(self,steps): moves stage upwards by a given amount of steps
+- center(self,steps): if MotorSystem is at position (0,0), will move the stage to its center 
+- moveTo(self,x,y,speed): moves the stage to a given coordinate position at a given speed
 
 #### Shapes.py
 Script in charge of generating premade shapes.
