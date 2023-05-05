@@ -61,14 +61,16 @@ def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     
     if truncate_side == "Left":
         circlePath.start = circlePath.centerDown
+        steps_to_go = int(x_steps*0.707//1) 
     elif truncate_side == "Right":
         circlePath.start = circlePath.centerTop
+        steps_to_go = int(x_steps*0.707//1) 
     elif truncate_side == "Top":
         circlePath.start = circlePath.centerLeft
+        steps_to_go = int(x_steps-x_steps*0.707//1) 
     else:
         circlePath.start = circlePath.centerRight
-    
-    steps_to_go = int(x_steps*0.707//1) 
+        steps_to_go = int(x_steps-x_steps*0.707//1) 
     
     current = circlePath.start
     
@@ -81,8 +83,6 @@ def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     
     current.next = walker
     
-
-
 def rectangle(x_pos, y_pos, x_length, y_length):
     x_steps, x_length = x_to_steps(x_length/2)
     y_steps, y_length = y_to_steps(y_length/2)
