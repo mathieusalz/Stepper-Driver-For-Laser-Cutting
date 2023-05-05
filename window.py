@@ -79,7 +79,6 @@ def calibration_and_center(joyStick,MotorSys,board):
         #   Set Center
         elif event in (sg.WIN_CLOSED, 'Set Center'):
             window.close()
-            MotorSys.setPosition((0,0))
             MotorSys.relativeCenter = MotorSys.getPosition()
             return True
 
