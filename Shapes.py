@@ -8,6 +8,7 @@ from helper import x_to_steps, y_to_steps
 from LinkedList import LinkedList
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 
 def circle(x_pos, y_pos, radius):
     
@@ -45,12 +46,10 @@ def circle(x_pos, y_pos, radius):
             next_flipped = y_flipped_point
         
         last_point = point
-        
-        
-            
-        if i /x_steps == 1:
-                circlePath.centerTop = point
-                circlePath.centerBottom = y_flipped_point
+    
+        if i/x_steps == 1: 
+            circlePath.centerTop = point
+            circlePath.centerDown = y_flipped_point
     
     point.next = y_flipped_point.next
         
@@ -82,16 +81,11 @@ def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     for i in range(steps_to_go):
         current = current.next
         
-    compare = current
-    walker = current.next.next.next
+    walker = current.next
+    for i in range(2*(x_steps-steps_to_go)):
+        walker = walker.next
     
-    while True:
-        if compare.coord[compare_coord] == walker.coord[compare_coord]:
-            break
-        else:
-            walker = walker.next
-    
-    compare.next = walker
+    current.next = walker
     
     return truncatedCircle
 
@@ -100,52 +94,45 @@ def rectangle(x_pos, y_pos, x_length, y_length):
     x_steps, x_length = x_to_steps(x_length/2)
     y_steps, y_length = y_to_steps(y_length/2)
     
-    x_coords = np.linspace(x_pos-x_steps,x_pos+x_steps,2*x_steps)
-    y_coords = np.linspace(y_pos+y_steps,y_pos-y_steps,2*y_steps)
-    
-    y_coords = np.append(np.ones(2*x_steps)*y_coords[0],y_coords)
-    
-    x_coords = np.append(x_coords,np.ones(2*y_steps)*x_coords[-1])
-    
-    x_coords = np.append(x_coords,np.linspace(x_pos+x_steps,x_pos-x_steps,2*x_steps))    
-    y_coords = np.append(y_coords, np.ones(2*x_steps)*y_coords[-1])
-    
-    y_coords = np.append(y_coords,np.linspace(y_pos-y_steps,y_pos+y_steps,2*y_steps))
-    x_coords = np.append(x_coords,np.ones(2*y_steps)*x_coords[-1])
-    
     rectanglePath = LinkedList()
     
-    rectanglePath.fillList(x_coords,y_coords,x_steps,y_steps, shape="Rectangle")
-
+    leftTopCorner = rectanglePath.addElement((x_pos - x_steps, y_pos + y_steps))
+    rightTopCorner = leftTopCorner.setNext((x_pos + x_steps, y_pos + y_steps))
+    rightBottomCorner = rightTopCorner.setNext((x_pos + x_steps, y_pos - y_steps))
+    leftBottomCorner = rightBottomCorner.setNext((x_pos-x_steps, y_pos-y_steps))
+    leftBottomCorner.next = leftTopCorner
+    
+    rectanglePath.start = leftTopCorner
+    rectanglePath.leftTopCorner = leftTopCorner
+    rectanglePath.leftBottomCorner = leftBottomCorner
+    rectanglePath.rightTopCorner = rightTopCorner
+    rectanglePath.rightBottomCorner = rightBottomCorner
     
     return (x_steps, y_steps, rectanglePath)
         
 def truncateRectangle(x_steps,y_steps,rectanglePath, truncate_side):
     
-    truncatedRectangle = LinkedList()
-    
-    if truncate_side == "Top Right" or truncate_side == "Bottom Left":
+    if truncate_side == "Top Right":
+        trunc_1 = rectanglePath.leftTopCorner.setNext((rectanglePath.leftTopCorner.coord[0]+x_steps//(3/4),rectanglePath.leftTopCorner.coord[1]))
+        trunc_2 = trunc_1.setNext((trunc_1.coord[0],trunc_1.coord[1]-y_steps//4))
+        trunc_3 = trunc_2.setNext((rectanglePath.rightTopCorner.coord[0],trunc_2.coord[1]))
+        trunc_3.next = rectanglePath.rightBottomCorner
         
-        truncatedRectangle.start = rectanglePath.leftTopCorner if truncate_side == "Top Right" else rectanglePath.rightBottomCorner
-        steps_to_go = int(x_steps*1.75)
+    elif truncate_side == "Bottom Right":
+        trunc_1 = rectanglePath.rightTopCorner.setNext((rectanglePath.rightTopCorner.coord[0], rectanglePath.rightTopCorner.coord[1]-y_steps//(3/4)))
+        trunc_2 = trunc_1.setNext((trunc_1.coord[0]-x_steps//4,trunc_1.coord[1]))
+        trunc_3 = trunc_2.setNext((trunc_2.coord[0],rectanglePath.rightBottomCorner.coord[1]))
+        trunc_3.next = rectanglePath.leftBottomCorner
+        
+    elif truncate_side == "Bottom Left":
+        trunc_1 = rectanglePath.rightBottomCorner.setNext((rectanglePath.rightBottomCorner.coord[0]-x_steps//(3/4),rectanglePath.rightBottomCorner.coord[1]))
+        trunc_2 = trunc_1.setNext((trunc_1.coord[0],trunc_1.coord[1]+y_steps//4))
+        trunc_3 = trunc_2.setNext((rectanglePath.leftBottomCorner.coord[0],trunc_2.coord[1]))
+        trunc_3.next = rectanglePath.leftTopCorner
         
     else:
-        truncatedRectangle.start = rectanglePath.rightTopCorner if truncate_side == "Bottom Right" else rectanglePath.leftBottomCorner
-        
-        steps_to_go = int(y_steps*1.75)
-        
-    point = truncatedRectangle.start
-    
-    for i in range(steps_to_go):
-        point = point.next
-    
-    walker = point.next
-    
-    steps_to_go = int(x_steps*0.25 + y_steps*0.25)
-    for i in range(steps_to_go):
-        walker = walker.next
-    
-    point.next = walker
-    
-    point = truncatedRectangle.start
-    
+        rectanglePath.start = rectanglePath.leftBottomCorner
+        trunc_1 = rectanglePath.leftBottomCorner.setNext((rectanglePath.leftBottomCorner.coord[0],rectanglePath.leftBottomCorner.coord[1]+y_steps//(3/4)))
+        trunc_2 = trunc_1.setNext((trunc_1.coord[0]+x_steps//4,trunc_1.coord[1]))
+        trunc_3 = trunc_2.setNext((trunc_2.coord[0],rectanglePath.leftTopCorner.coord[1]))
+        trunc_3.next = rectanglePath.rightTopCorner

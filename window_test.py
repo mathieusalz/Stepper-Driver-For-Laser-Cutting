@@ -74,8 +74,7 @@ def shape_Choice():
     global canvas
     global window
     
-    window = sg.Window('Cut Wizard', deepcopy(layouts.lay_shapeChoice))
-    event, values = window.read()
+    window = sg.Window('Cut Wizard', deepcopy(layouts.lay_shapeChoice), finalize=True)
     
     x_pos, y_pos = (1350,3000)
     margin_left = x_steps_to_length(x_pos)
@@ -88,8 +87,8 @@ def shape_Choice():
     
     x_margin_text_element = window['XMargin']
     y_margin_text_element = window['YMargin']
-    x_margin_text_element.update(f"X Margin: {str(x_margin)} mm")
-    y_margin_text_element.update(f"Y Margin: {str(y_margin)} mm")
+    x_margin_text_element(f"X Margin: {str(x_margin)} mm")
+    y_margin_text_element(f"Y Margin: {str(y_margin)} mm")
     
     draw_path_x = []
     draw_path_y = []
@@ -133,13 +132,13 @@ def shape_Choice():
                 # Truncation
                 if values["Truncated Circle"]:
                     if values["U"]:
-                        side = "Left"
-                    elif values["L"]:
-                        side = "Bottom"
-                    elif values["R"]:
                         side = "Top"
-                    else:
+                    elif values["L"]:
+                        side = "Left"
+                    elif values["R"]:
                         side = "Right"
+                    else:
+                        side = "Bottom"
                     
                     path = Shapes.truncateCircle(x_steps,y_steps,path,side)
                     window.close()

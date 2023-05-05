@@ -7,7 +7,6 @@ Created on Wed May  3 18:10:10 2023
 
 
 from window_test import calibration_and_center, shape_Choice, cut_shape
-import matplotlib.pyplot as plt
 
 
 cut_wizard = calibration_and_center()

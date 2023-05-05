@@ -89,8 +89,8 @@ def shape_Choice(board, MotorSys):
     global canvas
     global window
     
-    window = sg.Window('Cut Wizard', deepcopy(layouts.lay_shapeChoice))
-    event, values = window.read()
+    window = sg.Window('Cut Wizard', deepcopy(layouts.lay_shapeChoice),finalize=True)
+
     x_pos, y_pos = MotorSys.relativeCenter
     margin_left = x_steps_to_length(x_pos)
     margin_down = y_steps_to_length(y_pos)
@@ -145,14 +145,14 @@ def shape_Choice(board, MotorSys):
                 
                 # Truncation
                 if values["Truncated Circle"]:
-                    if values["U"]:
+                    if values["L"]:
                         side = "Left"
-                    elif values["L"]:
-                        side = "Bottom"
-                    elif values["R"]:
+                    elif values["U"]:
                         side = "Top"
-                    else:
+                    elif values["R"]:
                         side = "Right"
+                    else:
+                        side = "Bottom"
                     
                     path = Shapes.truncateCircle(x_steps,y_steps,path,side)
                     window.close()
