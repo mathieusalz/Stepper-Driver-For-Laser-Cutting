@@ -36,7 +36,6 @@ Object representing a Motor.
 Functions:
 - init(dirPin, stepPin):
 - run(steps,speed): runs a motor for a given number of steps at a given speed
-- setBrother(brother): sets the motors 
 - setLimit(limit): sets a limit for the motor 
 - switchDirection: switches the direction from the motor (e.g. if set to left then sets to right) 
 
