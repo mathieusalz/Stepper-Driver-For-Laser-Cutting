@@ -89,17 +89,11 @@ def rectangle(x_pos, y_pos, x_length, y_length):
     
     rectanglePath = LinkedList()
     
-    leftTopCorner = rectanglePath.addElement((x_pos - x_steps, y_pos + y_steps))
-    rightTopCorner = leftTopCorner.setNext((x_pos + x_steps, y_pos + y_steps))
-    rightBottomCorner = rightTopCorner.setNext((x_pos + x_steps, y_pos - y_steps))
-    leftBottomCorner = rightBottomCorner.setNext((x_pos-x_steps, y_pos-y_steps))
-    leftBottomCorner.next = leftTopCorner
-    
-    rectanglePath.start = leftTopCorner
-    rectanglePath.leftTopCorner = leftTopCorner
-    rectanglePath.leftBottomCorner = leftBottomCorner
-    rectanglePath.rightTopCorner = rightTopCorner
-    rectanglePath.rightBottomCorner = rightBottomCorner
+    rectanglePath.leftTopCorner = rectanglePath.addElement((x_pos - x_steps, y_pos + y_steps))
+    rectanglePath.rightTopCorner = rectanglePath.leftTopCorner.setNext((x_pos + x_steps, y_pos + y_steps))
+    rectanglePath.leftBottomCorner = rectanglePath.rightTopCorner.setNext((x_pos + x_steps, y_pos - y_steps))
+    rectanglePath.leftBottomCorner = rectanglePath.rightBottomCorner.setNext((x_pos-x_steps, y_pos-y_steps))
+    rectanglePath.leftBottomCorner.next = rectanglePath.leftTopCorner
     
     return (x_steps, y_steps, rectanglePath)
         
