@@ -10,5 +10,5 @@ class Element():
         self.next = None
         self.coord = coord
         
-    def setNext(self,nextCoord):
-        self.next = nextCoord
+    def setNext(self,element):
+        self.next = element

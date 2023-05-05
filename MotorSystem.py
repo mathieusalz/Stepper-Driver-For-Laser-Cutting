@@ -11,15 +11,15 @@ import numpy as np
 
 class Motor_System():
     def __init__(self,board):
-        dirX = board.digital[3]
-        stepX = board.digital[4]
+        dirX = board.digital[13]
+        stepX = board.digital[12]
         
-        dirY = board.digital[6]
-        stepY = board.digital[5]
+        dirY = board.digital[8]
+        stepY = board.digital[9]
+        
         self.X_Motor = Motor(dirX,stepX)
         self.Y_Motor = Motor(dirY,stepY)
         self.relativeCenter = None
-        self.setBrothers()
         self.setLimits()
     
     def setRelativeCenter(self,coords):
@@ -28,10 +28,6 @@ class Motor_System():
     def setPosition(self,coords):
         self.X_Motor.position = coords[0]
         self.Y_Motor.position = coords[1]
-    
-    def setBrothers(self):
-        self.X_Motor.setBrother(self.Y_Motor)
-        self.Y_Motor.setBrother(self.X_Motor)
     
     def setLeft(self):
         self.X_Motor.dirPin.write(1)

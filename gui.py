@@ -4,18 +4,9 @@
 ########################################################################
 '''
 
-import PySimpleGUI as sg
-from tkinter import *
-from PIL import Image, ImageTk
 import pyfirmata
 from MotorSystem import Motor_System
 from joyStick import JoyStick
-import Shapes
-from LinkedList import LinkedList
-import matplotlib.pyplot as plt
-from helper import x_to_steps, y_to_steps
-import numpy as np
-import time
 from window import calibration_and_center, shape_Choice, cut_shape
 
 
@@ -36,12 +27,10 @@ joyStick = JoyStick(board,MotorSys)
 ########################################################################
 '''
 
-
 cut_wizard = calibration_and_center( 
                                     joyStick = joyStick, 
                                     MotorSys = MotorSys, 
-                                    board = board,
-                                    known_position= False
+                                    board = board
                                     )
 while cut_wizard:
     
@@ -53,7 +42,7 @@ while cut_wizard:
             
     if path is not None:
         
-        cut_wizard = cut_shape(path
+        cut_wizard = cut_shape(
             MotorSys, 
             path,
             board
@@ -65,6 +54,6 @@ while cut_wizard:
 ########################################################################
                                     PROGRAM END
 ########################################################################
-'''        
+'''      
         
 board.sp.close()

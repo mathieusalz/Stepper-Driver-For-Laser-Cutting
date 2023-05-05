@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed May  3 18:11:37 2023
-
-@author: mathi
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Tue Apr  4 18:04:42 2023
 
 @author: mathi
@@ -46,7 +39,7 @@ def draw_smth(event):
     draw_path_y.append(y_c)
 
 
-def calibration_and_center(joyStick,MotorSys,board):
+def calibration_and_center():
     global window
     
     window = sg.Window('Calibration', layouts.lay_joystick)
@@ -56,34 +49,25 @@ def calibration_and_center(joyStick,MotorSys,board):
         
         event, values = window.read(timeout=0.1)
         
-        for i in range(1000):
-            joyStick.control()
-
-        
         #   Cancel
         if event in (sg.WIN_CLOSED, 'Cancel'):
-            board.sp.close() 
+            window.close()
             break
         
         #   Calibrate
         elif event in (sg.WIN_CLOSED, 'Calibrate'):
-            MotorSys.setPosition((0,0))
+            pass
         
         #   Center
         elif event in (sg.WIN_CLOSED, 'Center'):
-            MotorSys.center()
-            MotorSys.relativeCenter = MotorSys.getPosition()
             window.close()
             return True
         
         #   Set Center
         elif event in (sg.WIN_CLOSED, 'Set Center'):
-            window.close()
-            MotorSys.setPosition((0,0))
-            MotorSys.relativeCenter = MotorSys.getPosition()
             return True
 
-def shape_Choice(board, MotorSys):
+def shape_Choice():
 
     global draw_path_x
     global draw_path_y
@@ -100,7 +84,6 @@ def shape_Choice(board, MotorSys):
         
         #   Cancel
         if event in (sg.WIN_CLOSED, 'Cancel'):
-            board.sp.close() 
             window.close()
             break
         
@@ -121,7 +104,7 @@ def shape_Choice(board, MotorSys):
         #   Ok
         elif event in (sg.WIN_CLOSED, 'OK'):
             
-            x_pos,y_pos = MotorSys.relativeCenter
+            x_pos,y_pos = (0,0)
             
             #   Circle
             if values['Circle'] == True:
@@ -177,13 +160,13 @@ def shape_Choice(board, MotorSys):
                 draw_path_x = np.array(draw_path_x)
 
                 draw_path_y = np.array(draw_path_y)
-                draw_path_x = draw_path_x + (MotorSys.relativeCenter[0]-draw_center[0])
-                draw_path_y = draw_path_y + (MotorSys.relativeCenter[1]-draw_center[1])
+                draw_path_x = draw_path_x + (0-draw_center[0])
+                draw_path_y = draw_path_y + (0-draw_center[1])
                 
                 path = LinkedList()
                 path.fillList(draw_path_x,draw_path_y,None,None,"Other")
-                    
-                app.quit()
+                
+                app.destroy()
                 window.close()
                 return path
     
@@ -225,7 +208,7 @@ def shape_Choice(board, MotorSys):
         elif values['Draw'] == True:
             chooseConfiguration(window,"DrawConfiguration")
             
-def cut_shape(MotorSys, path, board):
+def cut_shape(path):
     
     window = sg.Window('Cutting', deepcopy(layouts.lay_cut))
     point = path.start
@@ -237,13 +220,12 @@ def cut_shape(MotorSys, path, board):
         
         #   CANCEL
         if event in (sg.WIN_CLOSED, 'Cancel'):
-            board.sp.close() 
             window.close()
             return False
        
         #   Go to Start
         elif event in (sg.WIN_CLOSED, 'Go to Start'):
-            MotorSys.moveTo(point.coord[0],point.coord[1])
+            pass
             
         #   Stop Cutting
         elif event in (sg.WIN_CLOSED, "Stop Cutting"):
@@ -251,8 +233,6 @@ def cut_shape(MotorSys, path, board):
         
         #   New Shape
         elif event in (sg.WIN_CLOSED, "New Shape"):
-            x_cen, y_cen = MotorSys.relativeCenter
-            MotorSys.moveTo(x_cen,y_cen)
             window.close()
             return True
         
@@ -260,8 +240,6 @@ def cut_shape(MotorSys, path, board):
         elif event in (sg.WIN_CLOSED, "Begin") or continue_cutting:
             continue_cutting = True
             for i in range(100):
-                speed = float(values["speed"])
-                MotorSys.moveTo(point.coord[0],point.coord[1],speed)
                 point = point.next
           
                 

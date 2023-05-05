@@ -29,8 +29,7 @@ class LinkedList():
         
         if shape == "Rectangle":
             self.leftTopCorner = start_point
-        elif shape == "Circle":
-            self.centerLeft = start_point
+
         
         last_point = start_point       
                      
@@ -45,15 +44,6 @@ class LinkedList():
                     self.rightBottomCorner = point
                 if i == 4*x_steps + 2*y_steps:
                     self.leftBottomCorner = point
-                    
-            elif shape == "Circle":
-                if i> 0 and i % x_steps == 0:
-                    if i /x_steps == 1:
-                        self.centerTop = point
-                    elif i/x_steps == 2:
-                        self.centerRight = point
-                    else:
-                        self.centerDown = point
                         
             last_point = point
 

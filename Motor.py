@@ -4,6 +4,7 @@ Created on Tue Mar 14 02:00:50 2023
 
 @author: mathi
 """
+
 from helper import accurate_delay
 
 
@@ -13,8 +14,6 @@ class Motor():
         self.dirPin = dirPin
         self.stepPin = stepPin
         self.position = 0
-        self.history = [0]
-        self.brother = None
         self.limit = None
     
     def run(self,steps=1,speed = 1):
@@ -28,16 +27,11 @@ class Motor():
             for x in range(steps):
                 #Single pulse
                 self.position = self.position + update
-                self.history.append(self.position)
-                self.brother.history.append(self.brother.position)
                 
                 self.stepPin.write(1)
                 accurate_delay(speed)
                 self.stepPin.write(0)
                 accurate_delay(speed)
-    
-    def setBrother(self,bro):
-        self.brother = bro
     
     def setLimit(self,limit):
         self.limit = limit
@@ -50,5 +44,5 @@ class Motor():
         elif self.direction == "D":
             Motor.setUp()
         else:
-            Motor.setDown()
+            Motor.setDown() 
 
