@@ -29,6 +29,8 @@ Functions:
 #### Motor.py
 
 Object initialized with:
+- directionPin
+- stepPin
 
 Functions:
 - run(steps,speed): runs a motor for a given number of steps at a given speed
@@ -39,6 +41,7 @@ Functions:
 #### MotorSystem.py
 
 Object initialized with:
+- Arduino Board
 
 Functions:
 ##### Setters
@@ -96,14 +99,16 @@ Functions
 - y_to_steps(length):
 - accurate_delay(delay):
 #### LinkedList.py
-Object initialized with:
+Object initialized with nothing.
 
 Functions:
-- addElement():
-- fillList():
+- addElement(coordinates):
+- fillList(x coordinates, y coordinates):
 #### Element.py
 Object initialized with:
+- coordiates
 
-No Functions
+Functions:
+- setNext(element):
 
 
