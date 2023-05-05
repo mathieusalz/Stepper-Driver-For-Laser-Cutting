@@ -4,61 +4,59 @@ Created on Wed Mar 15 00:39:12 2023
 
 @author: mathi
 """
-from helper import x_to_steps, y_to_steps,x_sensitivity,y_sensitivity
+from helper import x_to_steps, y_to_steps
 from LinkedList import LinkedList
 import math
 import numpy as np
-import matplotlib.pyplot as plt
 
 def circle(x_pos, y_pos, radius):
-
+    
+    circlePath = LinkedList()
+    
     x_steps, _ = x_to_steps(radius)
     y_steps, _ = y_to_steps(radius)    
     
     x_coords = np.linspace(x_pos-x_steps, x_pos + x_steps, 2*x_steps)
     x_points = np.linspace(-radius, radius, 2*x_steps)
     
-    y_points = np.linspace(y_pos + y_steps, y_pos, 2*y_steps)
-
-    real_y_points = []    
+    y_coords = []    
     
+    last_point = None
+    next_flipped = None
+
     #Find each real y_point for each feasible x_point
-    for x_point in x_points:
+    for i,x_point in enumerate(x_points):
         y_point = math.sqrt((radius**2-(x_point)**2))
         y_step, _ = y_to_steps(y_point)
-        real_y_points.append(y_step+y_pos)
+        y_coords.append(y_step+y_pos)
         
-    y_coords = []
-
-    for y_point in (real_y_points):
-        dif = np.abs(np.array(y_points)-y_point)
-        best_index = np.where(dif == min(dif))[0]
-        y_coords.append(y_points[best_index])
-    
-    y_inv = y_pos - (np.array(y_coords)-y_pos)
-    y_coords = np.append(y_coords, y_inv)
-    x_coords = np.append(x_coords, np.flip(x_coords))
+        point = circlePath.addElement((x_coords[i],y_coords[i]))
+        y_flipped_point = circlePath.addElement((x_coords[i],2*y_pos - y_coords[i]))
         
-    circlePath = LinkedList()
-    
-    circlePath.fillList(x_coords,y_coords,x_steps,y_steps, shape="Circle")
-    
-    '''
-    last_point = circlePath.start
-    
-    for i in range(20000):
-        plt.plot(last_point.coord[0],last_point.coord[1], marker="o", markersize=1, markeredgecolor="red", markerfacecolor="green")
-        last_point  = last_point.next
-    '''
+        flipped_point = circle
+        if i == 0:
+            circlePath.start = point
+            circlePath.centerLeft = point
+            next_flipped = circlePath.start
+        else:
+            last_point.next = point
+            y_flipped_point.next = next_flipped
+        
+        last_point = point
+        next_flipped = y_flipped_point
+            
+        if i /x_steps == 1:
+                circlePath.centerTop = point
+                circlePath.centerBottom = y_flipped_point
+        
+    circlePath.centerRight = point
     
     return (x_steps, y_steps, circlePath)
 
 def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     
     truncatedCircle = LinkedList()
-    
-    print("Side to truncate:",truncate_side)
-    
+        
     if truncate_side == "Left":
         truncatedCircle.start = circlePath.centerDown
         compare_coord = 0
@@ -72,7 +70,6 @@ def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
         truncatedCircle.start = circlePath.centerRight
         compare_coord = 1
     
-    print("Coordinate to compare:",compare_coord)        
     steps_to_go = int(x_steps*0.707//1) 
     
     current = truncatedCircle.start
@@ -93,14 +90,6 @@ def truncateCircle(x_steps, y_steps, circlePath, truncate_side):
     
     return truncatedCircle
 
-    '''
-    point = truncatedCircle.start
-    
-    
-    for i in range(1200):
-        plt.plot(point.coord[0],point.coord[1], marker="o", markersize=1, markeredgecolor="red", markerfacecolor="green")
-        point  = point.next
-    '''
 
 def rectangle(x_pos, y_pos, x_length, y_length):
     x_steps, x_length = x_to_steps(x_length/2)
@@ -123,11 +112,6 @@ def rectangle(x_pos, y_pos, x_length, y_length):
     
     rectanglePath.fillList(x_coords,y_coords,x_steps,y_steps, shape="Rectangle")
 
-    '''
-    for i in range(1200):
-        plt.plot(last_point.coord[0],last_point.coord[1], marker="o", markersize=1, markeredgecolor="red", markerfacecolor="green")
-        last_point  = last_point.next
-    '''
     
     return (x_steps, y_steps, rectanglePath)
         
@@ -160,10 +144,3 @@ def truncateRectangle(x_steps,y_steps,rectanglePath, truncate_side):
     
     point = truncatedRectangle.start
     
-    
-    
-    '''
-    for i in range(1200):
-        plt.plot(point.coord[0],point.coord[1], marker="o", markersize=1, markeredgecolor="red", markerfacecolor="green")
-        point  = point.next
-    '''
