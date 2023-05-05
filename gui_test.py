@@ -7,15 +7,18 @@ Created on Wed May  3 18:10:10 2023
 
 
 from window_test import calibration_and_center, shape_Choice, cut_shape
+import matplotlib.pyplot as plt
 
 
 cut_wizard = calibration_and_center()
 
 while cut_wizard:
     
-    path = shape_Choice()
-            
-    if path is not None:
+    path, recalibrate = shape_Choice()
+    
+    if recalibrate:
+        cut_wizard = calibration_and_center( )        
+    elif path is not None:
         cut_wizard = cut_shape(path)
         
     else:

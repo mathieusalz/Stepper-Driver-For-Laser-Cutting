@@ -34,13 +34,18 @@ cut_wizard = calibration_and_center(
                                     )
 while cut_wizard:
     
-    path = shape_Choice( 
+    path, recalibrate = shape_Choice( 
                  board = board,
                  MotorSys = MotorSys
                  )
 
-            
-    if path is not None:
+    if recalibrate:
+        cut_wizard = calibration_and_center( 
+                                            joyStick = joyStick, 
+                                            MotorSys = MotorSys, 
+                                            board = board
+                                            )        
+    elif path is not None:
         
         cut_wizard = cut_shape(
             MotorSys, 

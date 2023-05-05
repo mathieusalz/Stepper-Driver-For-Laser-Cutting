@@ -14,7 +14,7 @@ Created on Tue Apr  4 18:04:42 2023
 import PySimpleGUI as sg
 import Shapes
 import numpy as np
-from helper import x_to_steps, y_to_steps
+from helper import x_to_steps, y_to_steps, x_steps_to_length, y_steps_to_length
 from copy import deepcopy
 from LinkedList import LinkedList
 import layouts
@@ -49,7 +49,7 @@ def draw_smth(event):
 def calibration_and_center(joyStick,MotorSys,board):
     global window
     
-    window = sg.Window('Calibration', layouts.lay_joystick)
+    window = sg.Window('Calibration', deepcopy(layouts.lay_joystick))
     
     
     while True:
@@ -91,6 +91,20 @@ def shape_Choice(board, MotorSys):
     global window
     
     window = sg.Window('Cut Wizard', deepcopy(layouts.lay_shapeChoice))
+    event, values = window.read()
+    x_pos, y_pos = MotorSys.relativeCenter
+    margin_left = x_steps_to_length(x_pos)
+    margin_down = y_steps_to_length(y_pos)
+    margin_right = MotorSys.X_Motor.limit-margin_left
+    margin_up = MotorSys.Y_Motor.limit - margin_down
+        
+    x_margin = margin_left if margin_left < margin_right else margin_right
+    y_margin = margin_down if margin_down < margin_up else margin_up
+    
+    x_margin_text_element = window['XMargin']
+    y_margin_text_element = window['YMargin']
+    x_margin_text_element.update(f"X Margin: {str(x_margin)} mm")
+    y_margin_text_element.update(f"Y Margin: {str(y_margin)} mm")
     
     draw_path_x = []
     draw_path_y = []
@@ -102,7 +116,11 @@ def shape_Choice(board, MotorSys):
         if event in (sg.WIN_CLOSED, 'Cancel'):
             board.sp.close() 
             window.close()
-            break
+            return None, False
+        
+        elif event in (sg.WIN_CLOSED, 'Recalibrate'):
+            window.close()
+            return None, True
         
         elif event in (sg.WIN_CLOSED, 'Start Drawing'):
             app = Tk()
@@ -120,9 +138,7 @@ def shape_Choice(board, MotorSys):
     
         #   Ok
         elif event in (sg.WIN_CLOSED, 'OK'):
-            
-            x_pos,y_pos = MotorSys.relativeCenter
-            
+                        
             #   Circle
             if values['Circle'] == True:
                 radius = float(values["radius_input"])
@@ -141,11 +157,11 @@ def shape_Choice(board, MotorSys):
                     
                     path = Shapes.truncateCircle(x_steps,y_steps,path,side)
                     window.close()
-                    return path
                 
                 else:
                     window.close()
-                    return path
+                
+                return path, False
             
             #   Rectangle
             elif values['Rectangle'] == True:
@@ -166,11 +182,11 @@ def shape_Choice(board, MotorSys):
                     
                     Shapes.truncateRectangle(x_steps,y_steps,path,side)
                     window.close()
-                    return path
                 
                 else:
                     window.close()
-                    return path
+                
+                return path, False
             
             #   Draw
             elif values['Draw'] == True:
@@ -185,7 +201,7 @@ def shape_Choice(board, MotorSys):
                     
                 app.quit()
                 window.close()
-                return path
+                return path, False
     
             window.close()
             break

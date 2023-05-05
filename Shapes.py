@@ -33,7 +33,7 @@ def circle(x_pos, y_pos, radius):
         point = circlePath.addElement((x_coords[i],y_coords[i]))
         y_flipped_point = circlePath.addElement((x_coords[i],2*y_pos - y_coords[i]))
         
-        flipped_point = circle
+        
         if i == 0:
             circlePath.start = point
             circlePath.centerLeft = point
@@ -41,13 +41,18 @@ def circle(x_pos, y_pos, radius):
         else:
             last_point.next = point
             y_flipped_point.next = next_flipped
+            last_point = point
+            next_flipped = y_flipped_point
         
         last_point = point
-        next_flipped = y_flipped_point
+        
+        
             
         if i /x_steps == 1:
                 circlePath.centerTop = point
                 circlePath.centerBottom = y_flipped_point
+    
+    point.next = y_flipped_point.next
         
     circlePath.centerRight = point
     

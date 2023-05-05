@@ -71,8 +71,8 @@ class Motor_System():
         self.X_Motor.run(steps,0.1)
     
     def center(self):
-        x_steps_to_half,_ = x_to_steps(y_range/2)
-        y_steps_to_half,_ = y_to_steps(x_range/2)
+        x_steps_to_half,_ = x_to_steps(x_range/2)
+        y_steps_to_half,_ = y_to_steps(y_range/2)
         self.goUp(y_steps_to_half)
         self.goLeft(x_steps_to_half)
         
