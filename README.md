@@ -21,6 +21,8 @@ In order to run the code, all the files need to be located in the same folder. W
 #### joystick.py
 
 Object initialized with:
+- Arduino board
+- Motor System
 
 Functions:
 - control():
